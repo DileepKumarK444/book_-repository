@@ -1,0 +1,45 @@
+
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+
+<div class="container-fluid bg-3 text-center"> 
+     
+    <h3 class="margin">Author</h3>
+    <div class="row" style="display: flex;">
+        {% for entry in author_entries %}
+      <div class="col-sm-4" style="width:auto">
+        <!-- <div class="col-sm-4"> -->
+            <div class="thumbnail" style="min-height: 400px;width:300px ">
+              <!-- <img src="paris.jpg" alt="Author" width="300" height="200"> -->
+              <h4><strong>{{entry.name}}</strong></h4>
+              <p>{{entry.description | richtext}}</p>
+            </div>
+          </div>
+      {% endfor %}
+
+      
+      
+    </div>
+  </div>
+
+{% if search_results %}
+    <ul>
+        {% for result in search_results %}
+            <li>
+                <h4><a href="{% pageurl result %}">{{ result }}</a></h4>
+                {% if result.search_description %}
+                    {{ result.search_description|safe }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% elif search_query %}
+    No results found
+{% else %}
+    Please type something into the search box
+{% endif %}
+{% endblock %}

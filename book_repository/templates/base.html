@@ -1,0 +1,129 @@
+{% load static wagtailcore_tags wagtailuserbar %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+            {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+            {% wagtail_site as current_site %}
+            {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        {% if page.search_description %}
+        <meta name="description" content="{{ page.search_description }}" />
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Force all links in the live preview panel to be opened in a new tab #}
+        {% if request.in_preview_panel %}
+        <base target="_blank">
+        {% endif %}
+
+        {# Global stylesheets #}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/book_repository.css' %}">
+        <style>
+            body {
+              font: 20px Montserrat, sans-serif;
+              line-height: 1.8;
+              color: #f5f6f7;
+            }
+            p {font-size: 16px;}
+            .margin {margin-bottom: 45px;}
+            .bg-1 { 
+              background-color: #1abc9c; /* Green */
+              color: #ffffff;
+            }
+            .bg-2 { 
+              background-color: #474e5d; /* Dark Blue */
+              color: #ffffff;
+            }
+            .bg-3 { 
+              background-color: #ffffff; /* White */
+              color: #555555;
+            }
+            .bg-4 { 
+              background-color: #2f2f2f; /* Black Gray */
+              color: #fff;
+            }
+            .container-fluid {
+              padding-top: 70px;
+              padding-bottom: 70px;
+            }
+            .navbar {
+              padding-top: 15px;
+              padding-bottom: 15px;
+              border: 0;
+              border-radius: 0;
+              margin-bottom: 0;
+              font-size: 12px;
+              letter-spacing: 5px;
+            }
+            .navbar-nav  li a:hover {
+              color: #1abc9c !important;
+            }
+            </style>
+        {% block extra_css %}
+        {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+    </head>
+
+    <body class="{% block body_class %}{% endblock %}">
+        {% wagtailuserbar %}
+
+        <nav class="navbar navbar-default">
+            <div class="container" style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        ">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>                        
+                </button>
+                <a class="navbar-brand" href="#">Logo</a>
+              </div>
+              <div class="navbar-header">
+                <form action="{% url 'search' %}" method="get" style="
+                display: flex;
+                align-items: center;
+            ">
+ 
+                        <div class="form-group mx-sm-3 " style="margin: 0;">
+                          <input type="text" name="query" value="{{ search_query }}" type="text" class="form-control" id="inputPassword2" placeholder="Search...">
+                        </div>
+                        <input type="submit" class="btn btn-primary" style="margin-left: 10px;" value="Search">
+                
+                
+                </form>
+              </div>
+              <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/book-1/">Books</a></li>
+                  
+                  <li><a href="/author-1/">Author</a></li>
+                  
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+        {% block content %}{% endblock %}
+
+        {# Global javascript #}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/book_repository.js' %}"></script>
+
+        {% block extra_js %}
+        {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>

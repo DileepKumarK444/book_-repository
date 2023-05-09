@@ -1,0 +1,33 @@
+
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+<div class="container-fluid bg-3 text-center">    
+    <h3 class="margin">Books</h3>
+    <div class="row" style="display: flex;">
+        
+        {% for entry in book_entries %}
+        
+        {% image entry.book_image width-400 as tmp_photo %}
+        <!-- {{tmp_photo}} -->
+      <div class="col-sm-4" style="width:auto">
+        <!-- <div class="col-sm-4"> -->
+            <div class="thumbnail" style="height: 500px;width:300px ">
+            <img src="{{tmp_photo.url}}" style="height: 200px;width:100%;object-fit: cover;" alt="Books" >
+            <h4><strong>{{entry.book_name}}</strong></h4>
+            <p style="text-align: start;">{{entry.body | richtext}}</p>
+          </div>
+      </div>
+      {% endfor %}
+      
+    </div>
+  </div>
+
+
+{% for entry in book_entries %}
+{{ entry.book_name }}
+{% endfor %}
+{% endblock %}
